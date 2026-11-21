@@ -2,6 +2,7 @@
 
 import argparse
 
+from commands import habit
 from commands import task
 
 
@@ -10,6 +11,7 @@ def build_parser():
     parser = argparse.ArgumentParser(prog="main.py")
     subparsers = parser.add_subparsers(dest="command")
     task.register(subparsers)
+    habit.register(subparsers)
     return parser
 
 
