@@ -15,7 +15,7 @@ from unittest import mock
 from commands import habit
 from main import main
 from services import habit_service
-from storage import json_storage
+from storage import json_storage as storage
 
 
 def empty_db():
@@ -49,7 +49,7 @@ class HabitCommandTestCase(unittest.TestCase):
         self.addCleanup(self.temp_dir.cleanup)
         self.path = os.path.join(self.temp_dir.name, "db.json")
         self.original_env = os.environ.get("HABIT_LOGGER_DB")
-        self.original_db_path = json_storage.DB_PATH
+        self.original_db_path = storage.DB_PATH
         self._set_db_path(self.path)
         self.addCleanup(self._restore_db_path)
 
@@ -73,11 +73,11 @@ class HabitCommandTestCase(unittest.TestCase):
         else:
             env["HABIT_LOGGER_DB"] = path
         with mock.patch.dict(os.environ, env, clear=True):
-            importlib.reload(json_storage)
+            importlib.reload(storage)
 
     def _restore_db_path(self):
         self._set_db_path(self.original_env)
-        self.assertEqual(json_storage.DB_PATH, self.original_db_path)
+        self.assertEqual(storage.DB_PATH, self.original_db_path)
 
     @contextmanager
     def fake_today(self, iso_date):
@@ -145,7 +145,7 @@ class RegistrationTests(HabitCommandTestCase):
         for name in names:
             with self.subTest(name=name):
                 self.assertTrue(callable(getattr(habit, name)))
-        self.assertIs(habit.storage, json_storage)
+        self.assertIs(habit.storage, storage)
 
     def test_help_lists_exactly_the_four_actions(self):
         stdout = io.StringIO()
