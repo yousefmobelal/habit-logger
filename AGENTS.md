@@ -6,6 +6,15 @@ Instructions for agents working in this repository.
 
 Command-based CLI for one-time tasks and daily habits. The MVP scope is in `_docs/outdated/plan.md`; the backlog is in [GitHub Issues](https://github.com/yousefmobelal/habit-logger/issues). Files under `_docs/outdated/` are read-only archives.
 
+## Process and roles
+
+- Read `_docs/process.md` before starting work.
+- Follow the active role file when a role or workflow step is requested:
+  - PM: `_docs/team/pm.md`
+  - Engineer: `_docs/team/software-engineer.md`
+  - QA: `_docs/team/qa-engineer.md`
+- When acting as QA (`_docs/team/qa-engineer.md`), do not edit application or test code; post the `PASS`/`FAIL` verdict comment on the target GitHub issue using `gh issue comment`.
+
 ## Tech stack
 
 - Python 3, standard library only. No third-party dependencies, build step, or packaging in the MVP.
@@ -24,14 +33,12 @@ No install, lint, or format command is configured.
 
 ## Layout and boundaries
 
-```
-main.py                  root parser and dispatch
-commands/                argparse subcommands and user-facing output
-services/                business logic on an in-memory db dict
-storage/json_storage.py  all JSON file I/O
-data/db.json             runtime data; do not commit
-tests/                   unittest tests
-```
+main.py root parser and dispatch
+commands/ argparse subcommands and user-facing output
+services/ business logic on an in-memory db dict
+storage/json_storage.py all JSON file I/O
+data/db.json runtime data; do not commit
+tests/ unittest tests
 
 - Keep file I/O in `storage/`, business logic in `services/`, and argument parsing and printing in `commands/`.
 - Services mutate the `db` dict in place and raise `ValueError` with clear messages for invalid input. Commands load through `storage`, save after success, print errors to stderr, and return 0 on success / 1 on error.
