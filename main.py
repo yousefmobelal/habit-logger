@@ -2,16 +2,23 @@
 
 import argparse
 
+from commands import task
+
 
 def build_parser():
-    """Return the root argument parser."""
-    return argparse.ArgumentParser(prog="main.py")
+    """Return the root argument parser with task commands registered."""
+    parser = argparse.ArgumentParser(prog="main.py")
+    subparsers = parser.add_subparsers(dest="command")
+    task.register(subparsers)
+    return parser
 
 
 def main(argv=None):
-    """Parse root arguments; subcommands are added in a later task."""
+    """Parse root arguments and dispatch a selected command handler."""
     parser = build_parser()
-    parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    if hasattr(args, "func"):
+        return args.func(args)
     return 0
 
 
