@@ -4,6 +4,7 @@ import copy
 import io
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
+from unittest import mock
 
 from services import task_service
 
@@ -316,6 +317,17 @@ class PurityTests(TaskServiceTestCase):
         self.assertEqual(stderr.getvalue(), "")
         self.assertEqual(db["habits"], before_habits)
         self.assertEqual(db["next_habit_id"], 2)
+
+    def test_service_never_opens_files_or_imports_storage(self):
+        self.assertFalse(hasattr(task_service, "storage"))
+        db = fresh_db()
+        with mock.patch("builtins.open") as mocked_open:
+            task_service.add(db, "Study")
+            task_service.list_tasks(db)
+            task_service.complete(db, 1)
+            task_service.uncomplete(db, 1)
+            task_service.delete(db, 1)
+        mocked_open.assert_not_called()
 
 
 if __name__ == "__main__":
