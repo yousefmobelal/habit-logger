@@ -2,7 +2,7 @@
 
 ## Description/setup
 
-An MVP command-based CLI for one-time tasks and daily habits. Requires Python 3 and only the standard library: no third-party dependencies, install step, build step, or packaging. Run all commands from the project root as `python main.py ...`.
+An MVP command-based CLI for one-time tasks and daily habits. Requires Python 3 and only the Python standard library: no third-party dependencies, install step, build step, or packaging. Run all commands from the project root as `python main.py ...`.
 
 ## Command reference
 
@@ -30,8 +30,12 @@ python main.py habit delete 1
 Summary (five stdout lines, in order; `N` is the current count):
 ```text
 python main.py summary
+Total tasks: N
+Pending tasks: N
+Completed tasks: N
+Total habits: N
+Habits logged today: N
 ```
-`Total tasks: N`; `Pending tasks: N`; `Completed tasks: N`; `Total habits: N`; `Habits logged today: N`.
 
 ## Storage/rules
 
